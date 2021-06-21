@@ -1,6 +1,5 @@
-# % Last Change: Wed Jun 16 02:01:52 PM 2021 CDT
+# % Last Change: Mon Jun 21 01:05:13 PM 2021 CDT
 # Base Image
-#FROM continuumio/miniconda3:4.9.2
 FROM debian:10.9
 
 # File Author / Maintainer
@@ -15,13 +14,6 @@ RUN apt-get update --fix-missing && \
     python3-pip \
     rsync \
     wget && \
-#    curl -fsSL https://github.com/smithlabcode/preseq/releases/download/v2.0.3/preseq_v2.0.3.tar.bz2 -o /opt/preseq_linux_v2.0.3.tar.bz2 && \
-#    tar xvjf /opt/preseq_linux_v2.0.3.tar.bz2 -C /opt/ && \
-#    rm /opt/preseq_linux_v2.0.3.tar.bz2 && \
-#    cd /opt/preseq/ && \
-#    make && \
-#    curl -fsSL http://regmedsrv1.wustl.edu/Public_SPACE/litd/Public_html/pkg/methylQA -o /usr/bin/methylQA && \
-#    chmod +x /usr/bin/methylQA && \
     apt-get clean all && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/log/dpkg.log /var/tmp/*
 
@@ -33,6 +25,11 @@ RUN pip3 install -U --no-cache-dir \
     SigProfilerSimulator \
     SigProfilerTopography \
     SigProfilerHotSpots
+
+RUN echo "from SigProfilerMatrixGenerator import install as genInstall" > /opt/hg38.py && \
+    echo "genInstall.install('GRCh38')" >> /opt/hg38.py && \
+    /usr/bin/python3 /opt/hg38.py && \
+    rm /opt/hg38.py
 
 # set timezone, debian and ubuntu
 RUN ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime && \
