@@ -16,3 +16,4 @@ SigProfilerHotSpots v0.0.21 Jun 2, 2021
 
 SigProfilerSimulator    v1.1.2  Sep 15, 2020
 
+GRCh38
