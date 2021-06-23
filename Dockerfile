@@ -1,4 +1,4 @@
-# % Last Change: Wed Jun 23 02:46:39 PM 2021 CDT
+# % Last Change: Wed Jun 23 04:36:33 PM 2021 CDT
 # Base Image
 FROM debian:10.9
 
@@ -11,6 +11,7 @@ ENV PATH /opt/conda/bin:$PATH
 RUN echo "deb http://deb.debian.org/debian buster contrib" >> /etc/apt/sources.list && \
     apt-get update --fix-missing && \
     apt-get install -y \
+    fontconfig \
     python3 \
     python3-pip \
     rsync \
