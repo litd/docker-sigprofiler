@@ -1,4 +1,4 @@
-# % Last Change: Mon Jun 21 01:05:13 PM 2021 CDT
+# % Last Change: Wed Jun 23 02:46:39 PM 2021 CDT
 # Base Image
 FROM debian:10.9
 
@@ -8,11 +8,13 @@ MAINTAINER Tiandao Li <litd99@gmail.com>
 ENV PATH /opt/conda/bin:$PATH
 
 # Installation
-RUN apt-get update --fix-missing && \
+RUN echo "deb http://deb.debian.org/debian buster contrib" >> /etc/apt/sources.list && \
+    apt-get update --fix-missing && \
     apt-get install -y \
     python3 \
     python3-pip \
     rsync \
+    ttf-mscorefonts-installer \
     wget && \
     apt-get clean all && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/log/dpkg.log /var/tmp/*
@@ -26,10 +28,11 @@ RUN pip3 install -U --no-cache-dir \
     SigProfilerTopography \
     SigProfilerHotSpots
 
-RUN echo "from SigProfilerMatrixGenerator import install as genInstall" > /opt/hg38.py && \
-    echo "genInstall.install('GRCh38')" >> /opt/hg38.py && \
-    /usr/bin/python3 /opt/hg38.py && \
-    rm /opt/hg38.py
+RUN echo "from SigProfilerMatrixGenerator import install as genInstall" > /opt/ref.py && \
+    echo "genInstall.install('GRCh37')" >> /opt/ref.py && \
+    echo "genInstall.install('GRCh38')" >> /opt/ref.py && \
+    /usr/bin/python3 /opt/ref.py && \
+    rm /opt/ref.py
 
 # set timezone, debian and ubuntu
 RUN ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime && \
